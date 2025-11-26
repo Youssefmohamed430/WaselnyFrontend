@@ -54,6 +54,44 @@ If `.env.example` is not present, you can still create `.env` manually with the 
   - `src/pages/DriverApplication.tsx`
   - `src/pages/DashboardLayout.tsx`
 
+### GitHub Pages Deployment
+
+This project is configured to deploy automatically to GitHub Pages using GitHub Actions.
+
+**Setup Steps:**
+
+1. **Enable GitHub Pages in your repository:**
+   - Go to your repo → Settings → Pages
+   - Under "Source", select **"GitHub Actions"** (not "Deploy from a branch")
+   - Save
+
+2. **Push your code:**
+   ```bash
+   git add .
+   git commit -m "Configure GitHub Pages deployment"
+   git push origin main
+   ```
+
+3. **Wait for deployment:**
+   - Go to your repo → Actions tab
+   - Wait for the "Deploy to GitHub Pages" workflow to complete
+   - Your site will be available at: `https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/`
+
+**Important Notes:**
+- The GitHub Actions workflow automatically sets the correct base path (`/repo-name/`)
+- The `404.html` file handles client-side routing for React Router
+- Make sure your backend CORS settings include your GitHub Pages URL:
+  ```csharp
+  corsOptions.AddPolicy("MyPolicy", CorsPolicy =>
+      CorsPolicy.WithOrigins(
+          "https://youssefmohamed430.github.io",
+          "http://localhost:5173"  // For local development
+      )
+      .AllowAnyHeader()
+      .AllowAnyMethod()
+      .AllowCredentials());
+  ```
+
 ### Notes
 
 - Access token is stored in `localStorage` via `tokenManager`; refresh token is handled as an HTTP-only cookie by the backend.
