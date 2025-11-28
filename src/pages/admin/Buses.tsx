@@ -150,15 +150,15 @@ const Buses = () => {
     <AdminLayout title="Bus Management">
       <div className="space-y-6">
         {/* Header Actions */}
-        <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-          <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between items-stretch sm:items-center">
+          <div className="flex gap-3 sm:gap-4 flex-1 sm:flex-initial">
             <select
               value={typeFilter}
               onChange={(e) => {
                 setTypeFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Types</option>
               <option value="Normal">Normal</option>
@@ -168,7 +168,7 @@ const Buses = () => {
           </div>
           <button
             onClick={() => handleOpenModal()}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-4 py-2 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
           >
             + Add Bus
           </button>
@@ -188,13 +188,13 @@ const Buses = () => {
           }}
           emptyMessage="No buses found"
           actions={(item: Bus) => (
-            <div className="flex gap-2">
+            <div className="flex gap-1 sm:gap-2">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleOpenModal(item);
                 }}
-                className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                className="px-2 sm:px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-xs sm:text-sm"
               >
                 Edit
               </button>
@@ -203,7 +203,7 @@ const Buses = () => {
                   e.stopPropagation();
                   handleDelete(item);
                 }}
-                className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                className="px-2 sm:px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs sm:text-sm"
               >
                 Delete
               </button>
@@ -226,7 +226,7 @@ const Buses = () => {
                 type="text"
                 value={formData.busCode}
                 onChange={(e) => setFormData({ ...formData, busCode: e.target.value.toUpperCase() })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="BUS001"
                 required
               />
@@ -239,7 +239,7 @@ const Buses = () => {
               <select
                 value={formData.busType}
                 onChange={(e) => setFormData({ ...formData, busType: e.target.value as CreateBusData['busType'] })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               >
                 <option value="Normal">Normal</option>
@@ -256,18 +256,18 @@ const Buses = () => {
                 type="number"
                 value={formData.totalSeats}
                 onChange={(e) => setFormData({ ...formData, totalSeats: parseInt(e.target.value) || 20 })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 min="10"
                 max="50"
                 required
               />
             </div>
 
-            <div className="flex gap-3 justify-end pt-4">
+            <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 justify-end pt-4">
               <button
                 type="button"
                 onClick={handleCloseModal}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
                 disabled={processing}
               >
                 Cancel
@@ -275,7 +275,7 @@ const Buses = () => {
               <button
                 type="submit"
                 disabled={processing}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
               >
                 {processing ? 'Saving...' : editingBus ? 'Update' : 'Create'}
               </button>

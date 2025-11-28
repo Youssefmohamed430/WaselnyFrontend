@@ -232,11 +232,11 @@ const Schedules = () => {
       <div className="space-y-6">
         {/* Filters */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <select
               value={filters.driver}
               onChange={(e) => setFilters({ ...filters, driver: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Drivers</option>
               {Array.from(new Set(schedules.map(s => s.driverName))).map((name) => (
@@ -249,7 +249,7 @@ const Schedules = () => {
             <select
               value={filters.trip}
               onChange={(e) => setFilters({ ...filters, trip: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Trips</option>
               {trips.map((trip) => (
@@ -263,7 +263,7 @@ const Schedules = () => {
               type="date"
               value={filters.dateFrom}
               onChange={(e) => setFilters({ ...filters, dateFrom: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="From Date"
             />
 
@@ -271,7 +271,7 @@ const Schedules = () => {
               type="date"
               value={filters.dateTo}
               onChange={(e) => setFilters({ ...filters, dateTo: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="To Date"
             />
           </div>
@@ -281,7 +281,7 @@ const Schedules = () => {
         <div className="flex justify-end">
           <button
             onClick={() => handleOpenModal()}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-4 py-2 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
           >
             + Add Schedule
           </button>
@@ -301,13 +301,13 @@ const Schedules = () => {
           }}
           emptyMessage="No schedules found"
           actions={(item: Schedule) => (
-            <div className="flex gap-2">
+            <div className="flex gap-1 sm:gap-2">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleOpenModal(item);
                 }}
-                className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                className="px-2 sm:px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-xs sm:text-sm"
               >
                 Edit
               </button>
@@ -316,7 +316,7 @@ const Schedules = () => {
                   e.stopPropagation();
                   handleDelete(item);
                 }}
-                className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                className="px-2 sm:px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs sm:text-sm"
               >
                 Delete
               </button>
@@ -340,7 +340,7 @@ const Schedules = () => {
                 type="datetime-local"
                 value={formData.departureDateTime}
                 onChange={(e) => setFormData({ ...formData, departureDateTime: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
                 min={new Date().toISOString().slice(0, 16)}
               />
@@ -353,7 +353,7 @@ const Schedules = () => {
               <select
                 value={formData.busId}
                 onChange={(e) => setFormData({ ...formData, busId: parseInt(e.target.value) || 0 })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               >
                 <option value="0">Select a bus</option>
@@ -372,7 +372,7 @@ const Schedules = () => {
               <select
                 value={formData.driverId}
                 onChange={(e) => setFormData({ ...formData, driverId: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               >
                 <option value="">Select a driver</option>
@@ -391,7 +391,7 @@ const Schedules = () => {
               <select
                 value={formData.tripId}
                 onChange={(e) => setFormData({ ...formData, tripId: parseInt(e.target.value) || 0 })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               >
                 <option value="0">Select a trip</option>
@@ -403,11 +403,11 @@ const Schedules = () => {
               </select>
             </div>
 
-            <div className="flex gap-3 justify-end pt-4">
+            <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 justify-end pt-4">
               <button
                 type="button"
                 onClick={handleCloseModal}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
                 disabled={processing}
               >
                 Cancel
@@ -415,7 +415,7 @@ const Schedules = () => {
               <button
                 type="submit"
                 disabled={processing}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
               >
                 {processing ? 'Saving...' : editingSchedule ? 'Update' : 'Create'}
               </button>

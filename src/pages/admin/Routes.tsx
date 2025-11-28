@@ -175,15 +175,15 @@ const Routes = () => {
     <AdminLayout title="Route Management">
       <div className="space-y-6">
         {/* Header Actions */}
-        <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-          <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between items-stretch sm:items-center">
+          <div className="flex gap-3 sm:gap-4 flex-1 sm:flex-initial">
             <select
               value={tripFilter}
               onChange={(e) => {
                 setTripFilter(e.target.value ? parseInt(e.target.value) : '');
                 setCurrentPage(1);
               }}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Trips</option>
               {trips.map((trip) => (
@@ -195,7 +195,7 @@ const Routes = () => {
           </div>
           <button
             onClick={() => handleOpenModal()}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-4 py-2 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
           >
             + Add Station to Route
           </button>
@@ -216,13 +216,13 @@ const Routes = () => {
               searchable={false}
               emptyMessage="No stations in this route"
               actions={(item: RouteType) => (
-                <div className="flex gap-2">
+                <div className="flex gap-1 sm:gap-2">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       handleOpenModal(item);
                     }}
-                    className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                    className="px-2 sm:px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-xs sm:text-sm"
                   >
                     Edit
                   </button>
@@ -231,7 +231,7 @@ const Routes = () => {
                       e.stopPropagation();
                       handleDelete(item);
                     }}
-                    className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                    className="px-2 sm:px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs sm:text-sm"
                   >
                     Delete
                   </button>
@@ -259,7 +259,7 @@ const Routes = () => {
               <select
                 value={formData.tripId}
                 onChange={(e) => setFormData({ ...formData, tripId: parseInt(e.target.value) || 0 })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               >
                 <option value="0">Select a trip</option>
@@ -278,7 +278,7 @@ const Routes = () => {
               <select
                 value={formData.stationId}
                 onChange={(e) => setFormData({ ...formData, stationId: parseInt(e.target.value) || 0 })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               >
                 <option value="0">Select a station</option>
@@ -298,17 +298,17 @@ const Routes = () => {
                 type="number"
                 value={formData.order}
                 onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 1 })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 min="1"
                 required
               />
             </div>
 
-            <div className="flex gap-3 justify-end pt-4">
+            <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 justify-end pt-4">
               <button
                 type="button"
                 onClick={handleCloseModal}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
                 disabled={processing}
               >
                 Cancel
@@ -316,7 +316,7 @@ const Routes = () => {
               <button
                 type="submit"
                 disabled={processing}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
               >
                 {processing ? 'Saving...' : editingRoute ? 'Update' : 'Create'}
               </button>

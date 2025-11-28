@@ -143,7 +143,7 @@ const Trips = () => {
         <div className="flex justify-end">
           <button
             onClick={() => handleOpenModal()}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-4 py-2 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
           >
             + Add Trip
           </button>
@@ -163,13 +163,13 @@ const Trips = () => {
           }}
           emptyMessage="No trips found"
           actions={(item: Trip) => (
-            <div className="flex gap-2">
+            <div className="flex gap-1 sm:gap-2">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleOpenModal(item);
                 }}
-                className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                className="px-2 sm:px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-xs sm:text-sm"
               >
                 Edit
               </button>
@@ -178,7 +178,7 @@ const Trips = () => {
                   e.stopPropagation();
                   handleDelete(item);
                 }}
-                className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                className="px-2 sm:px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs sm:text-sm"
               >
                 Delete
               </button>
@@ -201,7 +201,7 @@ const Trips = () => {
                 type="text"
                 value={formData.from}
                 onChange={(e) => setFormData({ ...formData, from: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Ramses"
                 required
                 minLength={3}
@@ -216,7 +216,7 @@ const Trips = () => {
                 type="text"
                 value={formData.to}
                 onChange={(e) => setFormData({ ...formData, to: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="6th October"
                 required
                 minLength={3}
@@ -231,7 +231,7 @@ const Trips = () => {
                 type="text"
                 value={formData.duration}
                 onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="01:30:00"
                 pattern="^([0-9]{2}):([0-5][0-9]):([0-5][0-9])$"
                 required
@@ -239,11 +239,11 @@ const Trips = () => {
               <p className="text-xs text-gray-500 mt-1">Format: HH:MM:SS (e.g., 01:30:00)</p>
             </div>
 
-            <div className="flex gap-3 justify-end pt-4">
+            <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 justify-end pt-4">
               <button
                 type="button"
                 onClick={handleCloseModal}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
                 disabled={processing}
               >
                 Cancel
@@ -251,7 +251,7 @@ const Trips = () => {
               <button
                 type="submit"
                 disabled={processing}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
               >
                 {processing ? 'Saving...' : editingTrip ? 'Update' : 'Create'}
               </button>

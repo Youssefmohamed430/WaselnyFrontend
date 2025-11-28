@@ -92,7 +92,7 @@ const VerifyEmail = () => {
             </div>
           )}
 
-          <div className="flex justify-between space-x-2">
+          <div className="flex justify-between gap-2 sm:gap-3">
             {codeDigits.map((digit, index) => (
               <input
                 key={index}
@@ -102,7 +102,7 @@ const VerifyEmail = () => {
                 maxLength={1}
                 value={digit}
                 onChange={(e) => handleChange(index, e.target.value)}
-                className="h-10 w-10 rounded-md border border-gray-300 text-center text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="h-12 w-10 sm:h-12 sm:w-12 rounded-md border border-gray-300 text-center text-lg sm:text-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             ))}
           </div>

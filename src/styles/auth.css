@@ -1,13 +1,13 @@
 .auth-layout {
-  @apply flex min-h-screen items-center justify-center bg-gradient-to-br from-primary-50 to-gray-100 px-4;
+  @apply flex min-h-screen items-center justify-center bg-gradient-to-br from-primary-50 to-gray-100 px-4 py-8;
 }
 
 .auth-card {
-  @apply w-full max-w-md rounded-2xl bg-white p-8 shadow-xl;
+  @apply w-full max-w-md rounded-2xl bg-white p-6 sm:p-8 shadow-xl;
 }
 
 .auth-title {
-  @apply text-xl font-semibold text-gray-900;
+  @apply text-xl sm:text-2xl font-semibold text-gray-900;
 }
 
 .auth-subtitle {

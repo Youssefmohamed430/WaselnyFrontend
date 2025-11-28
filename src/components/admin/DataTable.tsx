@@ -110,21 +110,21 @@ function DataTable<T extends Record<string, unknown>>({
             placeholder={searchPlaceholder}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
           />
         </div>
       )}
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full">
+        <table className="w-full min-w-[640px]">
           <thead className="bg-gray-50">
             <tr>
               {columns.map((column) => (
                 <th
                   key={String(column.key)}
                   onClick={() => handleSort(column.key)}
-                  className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
+                  className={`px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
                     column.sortable ? 'cursor-pointer hover:bg-gray-100' : ''
                   }`}
                 >
@@ -138,7 +138,7 @@ function DataTable<T extends Record<string, unknown>>({
                   </div>
                 </th>
               ))}
-              {actions && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>}
+              {actions && <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -146,7 +146,7 @@ function DataTable<T extends Record<string, unknown>>({
               <tr>
                 <td
                   colSpan={columns.length + (actions ? 1 : 0)}
-                  className="px-6 py-12 text-center text-gray-500"
+                  className="px-3 sm:px-6 py-12 text-center text-gray-500"
                 >
                   {emptyMessage}
                 </td>
@@ -159,14 +159,16 @@ function DataTable<T extends Record<string, unknown>>({
                   className={`hover:bg-gray-50 ${onRowClick ? 'cursor-pointer' : ''}`}
                 >
                   {columns.map((column) => (
-                    <td key={String(column.key)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {column.render
-                        ? column.render(item)
-                        : String(item[column.key as keyof T] ?? '')}
+                    <td key={String(column.key)} className="px-3 sm:px-6 py-4 text-sm text-gray-900">
+                      <div className="whitespace-nowrap">
+                        {column.render
+                          ? column.render(item)
+                          : String(item[column.key as keyof T] ?? '')}
+                      </div>
                     </td>
                   ))}
                   {actions && (
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <td className="px-3 sm:px-6 py-4 text-sm">
                       {actions(item)}
                     </td>
                   )}
@@ -179,8 +181,8 @@ function DataTable<T extends Record<string, unknown>>({
 
       {/* Pagination */}
       {pagination && sortedData.length > pagination.pageSize && (
-        <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-          <div className="text-sm text-gray-700">
+        <div className="px-4 sm:px-6 py-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-xs sm:text-sm text-gray-700 text-center sm:text-left">
             Showing {(pagination.currentPage - 1) * pagination.pageSize + 1} to{' '}
             {Math.min(pagination.currentPage * pagination.pageSize, sortedData.length)} of{' '}
             {sortedData.length} results
@@ -189,7 +191,7 @@ function DataTable<T extends Record<string, unknown>>({
             <button
               onClick={() => pagination.onPageChange(pagination.currentPage - 1)}
               disabled={pagination.currentPage === 1}
-              className="px-3 py-1 text-sm border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              className="px-3 py-1 text-xs sm:text-sm border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
             >
               Previous
             </button>
@@ -198,7 +200,7 @@ function DataTable<T extends Record<string, unknown>>({
               disabled={
                 pagination.currentPage * pagination.pageSize >= sortedData.length
               }
-              className="px-3 py-1 text-sm border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              className="px-3 py-1 text-xs sm:text-sm border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
             >
               Next
             </button>

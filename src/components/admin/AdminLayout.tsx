@@ -15,7 +15,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
       <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
       <div className="lg:pl-64">
         <Header title={title} onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
-        <main className="p-4 lg:p-6">{children}</main>
+        <main className="p-3 sm:p-4 lg:p-6">{children}</main>
       </div>
     </div>
   );

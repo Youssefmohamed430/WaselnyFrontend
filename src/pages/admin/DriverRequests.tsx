@@ -111,14 +111,14 @@ const DriverRequests = () => {
       <div className="space-y-6">
         {/* Filters */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <select
               value={statusFilter}
               onChange={(e) => {
                 setStatusFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Statuses</option>
               <option value="Suspend">Pending</option>
@@ -128,7 +128,7 @@ const DriverRequests = () => {
             <div className="flex-1" />
             <button
               onClick={fetchRequests}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="w-full sm:w-auto px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
             >
               Refresh
             </button>
@@ -149,7 +149,7 @@ const DriverRequests = () => {
           }}
           emptyMessage="No driver requests found"
           actions={(item: DriverRequest) => (
-            <div className="flex gap-2">
+            <div className="flex gap-1 sm:gap-2">
               {item.status === 'Suspend' && (
                 <>
                   <button
@@ -158,7 +158,7 @@ const DriverRequests = () => {
                       setSelectedRequest(item);
                       setActionModal('accept');
                     }}
-                    className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm"
+                    className="px-2 sm:px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-xs sm:text-sm"
                   >
                     Accept
                   </button>
@@ -168,7 +168,7 @@ const DriverRequests = () => {
                       setSelectedRequest(item);
                       setActionModal('reject');
                     }}
-                    className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+                    className="px-2 sm:px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs sm:text-sm"
                   >
                     Reject
                   </button>
@@ -193,13 +193,13 @@ const DriverRequests = () => {
               Are you sure you want to accept the driver request from{' '}
               <strong>{selectedRequest?.name}</strong>?
             </p>
-            <div className="flex gap-3 justify-end">
+            <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 justify-end">
               <button
                 onClick={() => {
                   setActionModal(null);
                   setSelectedRequest(null);
                 }}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
                 disabled={processing}
               >
                 Cancel
@@ -207,7 +207,7 @@ const DriverRequests = () => {
               <button
                 onClick={handleAccept}
                 disabled={processing}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
               >
                 {processing ? 'Processing...' : 'Accept'}
               </button>
@@ -229,13 +229,13 @@ const DriverRequests = () => {
               Are you sure you want to reject the driver request from{' '}
               <strong>{selectedRequest?.name}</strong>?
             </p>
-            <div className="flex gap-3 justify-end">
+            <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 justify-end">
               <button
                 onClick={() => {
                   setActionModal(null);
                   setSelectedRequest(null);
                 }}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
                 disabled={processing}
               >
                 Cancel
@@ -243,7 +243,7 @@ const DriverRequests = () => {
               <button
                 onClick={handleReject}
                 disabled={processing}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
               >
                 {processing ? 'Processing...' : 'Reject'}
               </button>
