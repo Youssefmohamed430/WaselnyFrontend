@@ -8,6 +8,15 @@ import ResetPassword from './pages/ResetPassword';
 import DriverApplication from './pages/DriverApplication';
 import DashboardLayout from './pages/DashboardLayout';
 import ProtectedRoute from './components/ProtectedRoute';
+import Dashboard from './pages/admin/Dashboard';
+import DriverRequests from './pages/admin/DriverRequests';
+import Buses from './pages/admin/Buses';
+import Stations from './pages/admin/Stations';
+import Trips from './pages/admin/Trips';
+import RoutesPage from './pages/admin/Routes';
+import Schedules from './pages/admin/Schedules';
+import Tickets from './pages/admin/Tickets';
+import Bookings from './pages/admin/Bookings';
 
 // Component to handle GitHub Pages routing
 const GitHubPagesRedirect = () => {
@@ -42,11 +51,76 @@ const App = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/driver-application" element={<DriverApplication />} />
 
+        {/* Admin Routes */}
         <Route
           path="/admin/dashboard"
           element={
             <ProtectedRoute allowedRoles={['Admin']}>
-              <DashboardLayout role="Admin" />
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/driver-requests"
+          element={
+            <ProtectedRoute allowedRoles={['Admin']}>
+              <DriverRequests />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/buses"
+          element={
+            <ProtectedRoute allowedRoles={['Admin']}>
+              <Buses />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/stations"
+          element={
+            <ProtectedRoute allowedRoles={['Admin']}>
+              <Stations />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/trips"
+          element={
+            <ProtectedRoute allowedRoles={['Admin']}>
+              <Trips />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/routes"
+          element={
+            <ProtectedRoute allowedRoles={['Admin']}>
+              <RoutesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/schedules"
+          element={
+            <ProtectedRoute allowedRoles={['Admin']}>
+              <Schedules />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/tickets"
+          element={
+            <ProtectedRoute allowedRoles={['Admin']}>
+              <Tickets />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/bookings"
+          element={
+            <ProtectedRoute allowedRoles={['Admin']}>
+              <Bookings />
             </ProtectedRoute>
           }
         />

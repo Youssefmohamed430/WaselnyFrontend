@@ -1,0 +1,339 @@
+import { useEffect, useState } from 'react';
+import AdminLayout from '../../components/admin/AdminLayout';
+import DataTable from '../../components/admin/DataTable';
+import Modal from '../../components/admin/Modal';
+import stationService, { Station, CreateStationData } from '../../services/stationService';
+import { toast } from '../../utils/toast';
+
+const Stations = () => {
+  const [stations, setStations] = useState<Station[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [areaFilter, setAreaFilter] = useState<string>('');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingStation, setEditingStation] = useState<Station | null>(null);
+  const [formData, setFormData] = useState<CreateStationData>({
+    name: '',
+    area: '',
+    location: '',
+    latitude: 0,
+    longitude: 0
+  });
+  const [processing, setProcessing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const fetchStations = async () => {
+    try {
+      setLoading(true);
+      const response = await stationService.getAll();
+      if (response.isSuccess && response.result) {
+        setStations(response.result);
+      }
+    } catch (error) {
+      console.error('Failed to fetch stations:', error);
+      toast.error('Failed to load stations');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStations();
+  }, []);
+
+  const uniqueAreas = Array.from(new Set(stations.map(s => s.area))).filter(Boolean);
+
+  const handleOpenModal = (station?: Station) => {
+    if (station) {
+      setEditingStation(station);
+      setFormData({
+        name: station.name,
+        area: station.area,
+        location: station.location,
+        latitude: station.latitude,
+        longitude: station.longitude
+      });
+    } else {
+      setEditingStation(null);
+      setFormData({
+        name: '',
+        area: '',
+        location: '',
+        latitude: 0,
+        longitude: 0
+      });
+    }
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setEditingStation(null);
+    setFormData({
+      name: '',
+      area: '',
+      location: '',
+      latitude: 0,
+      longitude: 0
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validation
+    if (!formData.name.trim() || formData.name.length < 3) {
+      toast.error('Station name must be at least 3 characters');
+      return;
+    }
+
+    if (!formData.area.trim()) {
+      toast.error('Area is required');
+      return;
+    }
+
+    if (formData.latitude < -90 || formData.latitude > 90) {
+      toast.error('Latitude must be between -90 and 90');
+      return;
+    }
+
+    if (formData.longitude < -180 || formData.longitude > 180) {
+      toast.error('Longitude must be between -180 and 180');
+      return;
+    }
+
+    try {
+      setProcessing(true);
+
+      if (editingStation) {
+        await stationService.update(editingStation.id, formData);
+        toast.success('Station updated successfully');
+      } else {
+        await stationService.create(formData);
+        toast.success('Station created successfully');
+      }
+
+      handleCloseModal();
+      await fetchStations();
+    } catch (error) {
+      console.error('Failed to save station:', error);
+      toast.error(editingStation ? 'Failed to update station' : 'Failed to create station');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const handleDelete = async (station: Station) => {
+    if (!confirm(`Are you sure you want to delete station "${station.name}"?`)) {
+      return;
+    }
+
+    try {
+      await stationService.delete(station.id);
+      toast.success('Station deleted successfully');
+      await fetchStations();
+    } catch (error) {
+      console.error('Failed to delete station:', error);
+      toast.error('Failed to delete station');
+    }
+  };
+
+  const filteredStations = stations.filter((station) => {
+    if (areaFilter && station.area !== areaFilter) return false;
+    return true;
+  });
+
+  const columns = [
+    { key: 'name', header: 'Name', sortable: true },
+    { key: 'area', header: 'Area', sortable: true },
+    { key: 'location', header: 'Location', sortable: true },
+    {
+      key: 'latitude',
+      header: 'Latitude',
+      sortable: true,
+      render: (item: Station) => item.latitude.toFixed(6)
+    },
+    {
+      key: 'longitude',
+      header: 'Longitude',
+      sortable: true,
+      render: (item: Station) => item.longitude.toFixed(6)
+    }
+  ];
+
+  return (
+    <AdminLayout title="Station Management">
+      <div className="space-y-6">
+        {/* Header Actions */}
+        <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+          <div className="flex gap-4">
+            <select
+              value={areaFilter}
+              onChange={(e) => {
+                setAreaFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">All Areas</option>
+              {uniqueAreas.map((area) => (
+                <option key={area} value={area}>
+                  {area}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            onClick={() => handleOpenModal()}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            + Add Station
+          </button>
+        </div>
+
+        {/* Table */}
+        <DataTable
+          data={filteredStations}
+          columns={columns}
+          loading={loading}
+          searchable
+          searchPlaceholder="Search by name..."
+          pagination={{
+            pageSize: 20,
+            currentPage,
+            onPageChange: setCurrentPage
+          }}
+          emptyMessage="No stations found"
+          actions={(item: Station) => (
+            <div className="flex gap-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenModal(item);
+                }}
+                className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+              >
+                Edit
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(item);
+                }}
+                className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
+              >
+                Delete
+              </button>
+            </div>
+          )}
+        />
+
+        {/* Add/Edit Modal */}
+        <Modal
+          isOpen={modalOpen}
+          onClose={handleCloseModal}
+          title={editingStation ? 'Edit Station' : 'Add New Station'}
+          size="lg"
+        >
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Station Name *
+              </label>
+              <input
+                type="text"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Ramses Station"
+                required
+                minLength={3}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Area *
+              </label>
+              <input
+                type="text"
+                value={formData.area}
+                onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Downtown"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Location *
+              </label>
+              <input
+                type="text"
+                value={formData.location}
+                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Ramses Square"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Latitude * (-90 to 90)
+                </label>
+                <input
+                  type="number"
+                  value={formData.latitude}
+                  onChange={(e) => setFormData({ ...formData, latitude: parseFloat(e.target.value) || 0 })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  step="any"
+                  min="-90"
+                  max="90"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Longitude * (-180 to 180)
+                </label>
+                <input
+                  type="number"
+                  value={formData.longitude}
+                  onChange={(e) => setFormData({ ...formData, longitude: parseFloat(e.target.value) || 0 })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  step="any"
+                  min="-180"
+                  max="180"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 justify-end pt-4">
+              <button
+                type="button"
+                onClick={handleCloseModal}
+                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                disabled={processing}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={processing}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              >
+                {processing ? 'Saving...' : editingStation ? 'Update' : 'Create'}
+              </button>
+            </div>
+          </form>
+        </Modal>
+      </div>
+    </AdminLayout>
+  );
+};
+
+export default Stations;
