@@ -17,6 +17,14 @@ import RoutesPage from './pages/admin/Routes';
 import Schedules from './pages/admin/Schedules';
 import Tickets from './pages/admin/Tickets';
 import Bookings from './pages/admin/Bookings';
+import PassengerLayout from './pages/passenger/PassengerLayout';
+import PassengerDashboard from './pages/passenger/Dashboard';
+import BookTrip from './pages/passenger/BookTrip';
+import MyBookings from './pages/passenger/MyBookings';
+import TrackBus from './pages/passenger/TrackBus';
+import Wallet from './pages/passenger/Wallet';
+import Notifications from './pages/passenger/Notifications';
+import Profile from './pages/passenger/Profile';
 
 // Component to handle GitHub Pages routing
 const GitHubPagesRedirect = () => {
@@ -132,14 +140,24 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        {/* Passenger Routes */}
         <Route
-          path="/passenger/dashboard"
+          path="/passenger"
           element={
             <ProtectedRoute allowedRoles={['Passenger']}>
-              <DashboardLayout role="Passenger" />
+              <PassengerLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<Navigate to="/passenger/dashboard" replace />} />
+          <Route path="dashboard" element={<PassengerDashboard />} />
+          <Route path="book-trip" element={<BookTrip />} />
+          <Route path="bookings" element={<MyBookings />} />
+          <Route path="track/:bookingId" element={<TrackBus />} />
+          <Route path="wallet" element={<Wallet />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
 
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>

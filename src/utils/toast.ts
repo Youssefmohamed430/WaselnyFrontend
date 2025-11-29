@@ -72,3 +72,7 @@ class ToastManager {
 }
 
 export const toast = new ToastManager();
+
+export const showToast = (message: string, type: ToastType = 'info', duration?: number): void => {
+  toast.show(message, type, duration);
+};
