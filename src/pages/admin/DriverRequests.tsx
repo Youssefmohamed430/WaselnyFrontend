@@ -19,12 +19,18 @@ const DriverRequests = () => {
     try {
       setLoading(true);
       const response = await adminService.getAllDriverRequests();
+      console.log('Driver Requests Response:', response);
       if (response.isSuccess && response.result) {
+        console.log('Driver Requests Data:', response.result);
         setRequests(response.result);
+      } else {
+        console.warn('No driver requests found or unsuccessful response');
+        setRequests([]);
       }
     } catch (error) {
       console.error('Failed to fetch driver requests:', error);
       toast.error('Failed to load driver requests');
+      setRequests([]);
     } finally {
       setLoading(false);
     }

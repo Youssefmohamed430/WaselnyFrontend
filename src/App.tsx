@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -32,6 +32,10 @@ import ActiveTrip from './pages/driver/ActiveTrip';
 import TripHistory from './pages/driver/TripHistory';
 import Statistics from './pages/driver/Statistics';
 import DriverNotifications from './pages/driver/Notifications';
+import { tokenManager } from './utils/tokenManager';
+import AuthService from './services/authService';
+
+const authService = new AuthService();
 
 // Component to handle GitHub Pages routing
 const GitHubPagesRedirect = () => {
@@ -42,7 +46,7 @@ const GitHubPagesRedirect = () => {
     // Check if we have a query parameter from 404.html redirect
     const queryParams = new URLSearchParams(location.search);
     const redirectPath = queryParams.get('/');
-    
+
     if (redirectPath) {
       // Clean up the query parameter and navigate
       const cleanPath = redirectPath.replace(/~and~/g, '&');
@@ -54,6 +58,45 @@ const GitHubPagesRedirect = () => {
 };
 
 const App = () => {
+  const [isInitializing, setIsInitializing] = useState(true);
+
+  useEffect(() => {
+    const initializeAuth = async () => {
+      const token = tokenManager.getToken();
+
+      // If we have a token, check if refresh token is still valid
+      if (token && tokenManager.isRefreshTokenValid()) {
+        try {
+          // Attempt to refresh the token to ensure it's valid
+          await authService.refreshToken();
+        } catch (error) {
+          console.log('Token refresh failed on app init:', error);
+          // Clear invalid tokens
+          tokenManager.clearAll();
+        }
+      } else if (token && !tokenManager.isRefreshTokenValid()) {
+        // Token exists but refresh token expired, clear everything
+        tokenManager.clearAll();
+      }
+
+      setIsInitializing(false);
+    };
+
+    initializeAuth();
+  }, []);
+
+  // Show loading state while initializing
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <GitHubPagesRedirect />

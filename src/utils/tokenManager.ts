@@ -8,6 +8,7 @@ export type AuthUser = {
 
 const TOKEN_KEY = 'waselny_token';
 const USER_KEY = 'waselny_user';
+const REFRESH_TOKEN_EXPIRATION_KEY = 'waselny_refresh_token_exp';
 
 export const tokenManager = {
   setToken(token: string) {
@@ -39,6 +40,26 @@ export const tokenManager = {
     if (!user) return null;
     const roles = (user.roles as string[] | undefined) || [];
     return roles[0] ?? null;
+  },
+  setRefreshTokenExpiration(expiration: string) {
+    localStorage.setItem(REFRESH_TOKEN_EXPIRATION_KEY, expiration);
+  },
+  getRefreshTokenExpiration(): string | null {
+    return localStorage.getItem(REFRESH_TOKEN_EXPIRATION_KEY);
+  },
+  removeRefreshTokenExpiration() {
+    localStorage.removeItem(REFRESH_TOKEN_EXPIRATION_KEY);
+  },
+  isRefreshTokenValid(): boolean {
+    const expiration = this.getRefreshTokenExpiration();
+    if (!expiration) return false;
+    const expirationDate = new Date(expiration);
+    return expirationDate > new Date();
+  },
+  clearAll() {
+    this.removeToken();
+    this.removeUserInfo();
+    this.removeRefreshTokenExpiration();
   }
 };
 

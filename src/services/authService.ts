@@ -21,6 +21,9 @@ class AuthService {
     if (data.token) {
       tokenManager.setToken(data.token);
       tokenManager.setUserInfo(data as unknown as AuthUser);
+      if (data.refreshTokenExpiration) {
+        tokenManager.setRefreshTokenExpiration(data.refreshTokenExpiration);
+      }
     }
     return data;
   }
@@ -43,6 +46,9 @@ class AuthService {
     if (data.token) {
       tokenManager.setToken(data.token);
       tokenManager.setUserInfo(data as unknown as AuthUser);
+      if (data.refreshTokenExpiration) {
+        tokenManager.setRefreshTokenExpiration(data.refreshTokenExpiration);
+      }
     }
     return data;
   }
@@ -71,6 +77,9 @@ class AuthService {
     if (data.token) {
       tokenManager.setToken(data.token);
       tokenManager.setUserInfo(data as unknown as AuthUser);
+      if (data.refreshTokenExpiration) {
+        tokenManager.setRefreshTokenExpiration(data.refreshTokenExpiration);
+      }
     }
     return data;
   }
@@ -81,8 +90,7 @@ class AuthService {
     } catch {
       // ignore errors on logout
     } finally {
-      tokenManager.removeToken();
-      tokenManager.removeUserInfo();
+      tokenManager.clearAll();
     }
   }
 

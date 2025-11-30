@@ -57,8 +57,7 @@ class HttpClient {
           } catch (refreshError) {
             this.isRefreshing = false;
             this.refreshQueue = [];
-            tokenManager.removeToken();
-            tokenManager.removeUserInfo();
+            tokenManager.clearAll();
             window.location.href = '/login';
             return Promise.reject(refreshError);
           }
