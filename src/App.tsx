@@ -25,6 +25,13 @@ import TrackBus from './pages/passenger/TrackBus';
 import Wallet from './pages/passenger/Wallet';
 import Notifications from './pages/passenger/Notifications';
 import Profile from './pages/passenger/Profile';
+import DriverLayout from './pages/driver/DriverLayout';
+import DriverDashboard from './pages/driver/Dashboard';
+import MySchedules from './pages/driver/MySchedules';
+import ActiveTrip from './pages/driver/ActiveTrip';
+import TripHistory from './pages/driver/TripHistory';
+import Statistics from './pages/driver/Statistics';
+import DriverNotifications from './pages/driver/Notifications';
 
 // Component to handle GitHub Pages routing
 const GitHubPagesRedirect = () => {
@@ -132,14 +139,23 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        {/* Driver Routes */}
         <Route
-          path="/driver/dashboard"
+          path="/driver"
           element={
             <ProtectedRoute allowedRoles={['Driver']}>
-              <DashboardLayout role="Driver" />
+              <DriverLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<Navigate to="/driver/dashboard" replace />} />
+          <Route path="dashboard" element={<DriverDashboard />} />
+          <Route path="my-schedules" element={<MySchedules />} />
+          <Route path="active-trip" element={<ActiveTrip />} />
+          <Route path="trip-history" element={<TripHistory />} />
+          <Route path="statistics" element={<Statistics />} />
+          <Route path="notifications" element={<DriverNotifications />} />
+        </Route>
         {/* Passenger Routes */}
         <Route
           path="/passenger"

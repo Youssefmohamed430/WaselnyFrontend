@@ -117,6 +117,36 @@ class SignalRService {
   isNotificationConnected(): boolean {
     return this.notificationConnection?.state === signalR.HubConnectionState.Connected ?? false;
   }
+
+  /**
+   * Send location update from driver
+   * Used by drivers to broadcast their current location
+   */
+  async sendLocationUpdate(driverId: string, latitude: number, longitude: number): Promise<void> {
+    if (!this.trackingConnection || this.trackingConnection.state !== signalR.HubConnectionState.Connected) {
+      console.warn('⚠️ TrackingHub not connected, attempting connection...');
+      // Try to connect if not connected
+      try {
+        if (!this.trackingConnection) {
+          this.trackingConnection = new signalR.HubConnectionBuilder()
+            .withUrl(`${API_BASE_URL}/trackingHub`)
+            .withAutomaticReconnect()
+            .build();
+        }
+        await this.trackingConnection.start();
+      } catch (error) {
+        console.error('❌ Failed to connect to TrackingHub:', error);
+        return;
+      }
+    }
+
+    try {
+      await this.trackingConnection.invoke('SendLocationUpdate', driverId, latitude, longitude);
+      console.log(`📍 Location sent: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
+    } catch (error) {
+      console.error('❌ Error sending location:', error);
+    }
+  }
 }
 
 export default new SignalRService();

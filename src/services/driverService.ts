@@ -20,6 +20,23 @@ class DriverService {
     const { data } = await httpClient.get<DriverResponse<Driver[]>>('/Driver');
     return data;
   }
+
+  async updateTripStatus(driverId: string, status: 'Start' | 'Cancel' | 'End'): Promise<DriverResponse<null>> {
+    const { data } = await httpClient.put<DriverResponse<null>>(`/Driver/${driverId}/${status}`);
+    return data;
+  }
+
+  async startTrip(driverId: string): Promise<DriverResponse<null>> {
+    return this.updateTripStatus(driverId, 'Start');
+  }
+
+  async cancelTrip(driverId: string): Promise<DriverResponse<null>> {
+    return this.updateTripStatus(driverId, 'Cancel');
+  }
+
+  async endTrip(driverId: string): Promise<DriverResponse<null>> {
+    return this.updateTripStatus(driverId, 'End');
+  }
 }
 
 export default new DriverService();
