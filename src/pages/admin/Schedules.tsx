@@ -5,12 +5,11 @@ import Modal from '../../components/admin/Modal';
 import scheduleService, { Schedule, CreateScheduleData } from '../../services/scheduleService';
 import busService from '../../services/busService';
 import tripService from '../../services/tripService';
-import adminService from '../../services/adminService';
+import driverService from '../../services/driverService';
 import { toast } from '../../utils/toast';
 import { formatters } from '../../utils/formatters';
 import { Bus } from '../../services/busService';
 import { Trip } from '../../services/tripService';
-import { DriverRequest } from '../../services/adminService';
 
 const Schedules = () => {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
@@ -74,16 +73,18 @@ const Schedules = () => {
 
   const fetchDrivers = async () => {
     try {
-      // Get accepted drivers from driver requests
-      const response = await adminService.getAllDriverRequests();
+      // Get all drivers from Driver endpoint
+      const response = await driverService.getAll();
       if (response.isSuccess && response.result) {
-        const acceptedDrivers = response.result
-          .filter(r => r.status === 'Accepted')
-          .map(r => ({ id: String(r.id), name: r.name }));
-        setDrivers(acceptedDrivers);
+        const driversList = response.result.map(driver => ({
+          id: driver.id,
+          name: driver.name
+        }));
+        setDrivers(driversList);
       }
     } catch (error) {
       console.error('Failed to fetch drivers:', error);
+      toast.error('Failed to load drivers');
     }
   };
 
