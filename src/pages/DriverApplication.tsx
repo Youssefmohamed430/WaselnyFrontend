@@ -5,7 +5,7 @@ import FormInput from '../components/FormInput';
 import Button from '../components/Button';
 import ErrorMessage from '../components/ErrorMessage';
 import { Validators } from '../utils/validator';
-import { createFriendlyError, logError } from '../utils/errorHandler';
+import { createFriendlyErrorWithContext, logError } from '../utils/errorHandler';
 
 const DriverApplication = () => {
   const authService = new AuthService();
@@ -48,7 +48,10 @@ const DriverApplication = () => {
       setForm({ name: '', ssn: '', phone: '', email: '' });
     } catch (err) {
       logError(err);
-      setApiError(createFriendlyError(err).message);
+      setApiError(createFriendlyErrorWithContext(err, {
+        operation: 'driver request',
+        userRole: 'Passenger'
+      }).message);
     } finally {
       setLoading(false);
     }

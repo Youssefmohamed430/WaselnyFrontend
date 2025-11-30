@@ -4,7 +4,7 @@ import AuthService from '../services/authService';
 import FormInput from '../components/FormInput';
 import Button from '../components/Button';
 import ErrorMessage from '../components/ErrorMessage';
-import { createFriendlyError, logError } from '../utils/errorHandler';
+import { createFriendlyErrorWithContext, logError } from '../utils/errorHandler';
 
 const Login = () => {
   const authService = new AuthService();
@@ -38,7 +38,10 @@ const Login = () => {
       }
     } catch (err) {
       logError(err);
-      setError(createFriendlyError(err).message);
+      setError(createFriendlyErrorWithContext(err, {
+        operation: 'login',
+        userRole: 'Passenger'
+      }).message);
     } finally {
       setLoading(false);
     }

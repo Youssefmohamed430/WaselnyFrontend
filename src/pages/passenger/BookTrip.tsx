@@ -257,35 +257,33 @@ const BookTrip = () => {
   const totalPrice = ticket ? ticket.price * numberOfTickets : 0;
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
-      <div className="rounded-lg bg-white p-6 shadow-sm">
-        <h1 className="text-2xl font-bold text-gray-800">Book a Trip</h1>
-        <p className="mt-2 text-gray-600">Follow the steps below to book your trip</p>
+    <div className="mx-auto max-w-4xl space-y-4 sm:space-y-6 px-3 sm:px-0">
+      <div className="rounded-lg bg-white p-4 sm:p-6 shadow-sm">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Book a Trip</h1>
+        <p className="mt-1 sm:mt-2 text-sm sm:text-base text-gray-600">Follow the steps below to book your trip</p>
       </div>
 
       {/* Progress Steps */}
-      <div className="rounded-lg bg-white p-6 shadow-sm">
+      <div className="rounded-lg bg-white p-3 sm:p-6 shadow-sm">
         <div className="flex items-center justify-between">
           {(['location', 'destination', 'trip', 'schedule', 'ticket', 'confirm'] as BookingStep[]).map((s, index) => (
             <div key={s} className="flex flex-1 items-center">
               <div
-                className={`flex h-10 w-10 items-center justify-center rounded-full ${
-                  step === s
+                className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full text-xs sm:text-base font-medium ${step === s
                     ? 'bg-blue-600 text-white'
                     : ['location', 'destination', 'trip', 'schedule', 'ticket', 'confirm'].indexOf(step) > index
                       ? 'bg-green-500 text-white'
                       : 'bg-gray-200 text-gray-600'
-                }`}
+                  }`}
               >
                 {index + 1}
               </div>
               {index < 5 && (
                 <div
-                  className={`h-1 flex-1 ${
-                    ['location', 'destination', 'trip', 'schedule', 'ticket', 'confirm'].indexOf(step) > index
+                  className={`h-1 flex-1 ${['location', 'destination', 'trip', 'schedule', 'ticket', 'confirm'].indexOf(step) > index
                       ? 'bg-green-500'
                       : 'bg-gray-200'
-                  }`}
+                    }`}
                 />
               )}
             </div>
@@ -297,13 +295,13 @@ const BookTrip = () => {
 
       {/* Step 1: Get Location / Select From Station */}
       {step === 'location' && (
-        <div className="rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-xl font-semibold text-gray-800">Select Origin Station</h2>
-          <div className="space-y-4">
+        <div className="rounded-lg bg-white p-4 sm:p-6 shadow-sm">
+          <h2 className="mb-3 sm:mb-4 text-lg sm:text-xl font-semibold text-gray-800">Select Origin Station</h2>
+          <div className="space-y-3 sm:space-y-4">
             <button
               onClick={getCurrentLocation}
               disabled={loading}
-              className="w-full rounded-md bg-blue-600 px-4 py-3 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              className="w-full rounded-md bg-blue-600 px-4 py-3 font-medium text-sm sm:text-base text-white hover:bg-blue-700 disabled:opacity-50 min-h-[44px]"
             >
               {loading ? 'Getting location...' : '📍 Use My Current Location'}
             </button>
@@ -319,11 +317,10 @@ const BookTrip = () => {
                         <button
                           key={station.id}
                           onClick={() => handleFromStationSelect(station)}
-                          className={`rounded-md border px-4 py-2 text-left text-sm ${
-                            selectedFromStation?.id === station.id
-                              ? 'border-blue-600 bg-blue-50 text-blue-700'
+                          className={`rounded-md border px-3 sm:px-4 py-2.5 text-left text-sm min-h-[44px] ${selectedFromStation?.id === station.id
+                              ? 'border-blue-600 bg-blue-50 text-blue-700 font-medium'
                               : 'border-gray-300 hover:bg-gray-50'
-                          }`}
+                            }`}
                         >
                           {station.name}
                         </button>
@@ -368,11 +365,10 @@ const BookTrip = () => {
                       <button
                         key={station.id}
                         onClick={() => handleToStationSelect(station)}
-                        className={`rounded-md border px-4 py-2 text-left text-sm ${
-                          selectedToStation?.id === station.id
+                        className={`rounded-md border px-4 py-2 text-left text-sm ${selectedToStation?.id === station.id
                             ? 'border-blue-600 bg-blue-50 text-blue-700'
                             : 'border-gray-300 hover:bg-gray-50'
-                        }`}
+                          }`}
                       >
                         {station.name}
                       </button>
@@ -399,11 +395,10 @@ const BookTrip = () => {
                 <button
                   key={trip.id}
                   onClick={() => handleTripSelect(trip)}
-                  className={`w-full rounded-md border px-4 py-3 text-left ${
-                    selectedTrip?.id === trip.id
+                  className={`w-full rounded-md border px-4 py-3 text-left ${selectedTrip?.id === trip.id
                       ? 'border-blue-600 bg-blue-50'
                       : 'border-gray-300 hover:bg-gray-50'
-                  }`}
+                    }`}
                 >
                   <p className="font-medium text-gray-800">
                     {trip.from} → {trip.to}
@@ -430,11 +425,10 @@ const BookTrip = () => {
                 <button
                   key={schedule.schId}
                   onClick={() => handleScheduleSelect(schedule)}
-                  className={`w-full rounded-md border px-4 py-3 text-left ${
-                    selectedSchedule?.schId === schedule.schId
+                  className={`w-full rounded-md border px-4 py-3 text-left ${selectedSchedule?.schId === schedule.schId
                       ? 'border-blue-600 bg-blue-50'
                       : 'border-gray-300 hover:bg-gray-50'
-                  }`}
+                    }`}
                 >
                   <p className="font-medium text-gray-800">
                     {new Date(schedule.departureDateTime).toLocaleString('en-US', {
@@ -464,17 +458,17 @@ const BookTrip = () => {
             </div>
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">Number of Tickets</label>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center justify-center space-x-4">
                 <button
                   onClick={() => setNumberOfTickets(Math.max(1, numberOfTickets - 1))}
-                  className="rounded-md border border-gray-300 px-4 py-2 hover:bg-gray-50"
+                  className="rounded-md border border-gray-300 px-5 py-3 hover:bg-gray-50 text-lg font-semibold min-h-[44px] min-w-[44px]"
                 >
-                  -
+                  −
                 </button>
-                <span className="text-lg font-semibold">{numberOfTickets}</span>
+                <span className="text-xl sm:text-2xl font-semibold min-w-[3rem] text-center">{numberOfTickets}</span>
                 <button
                   onClick={() => setNumberOfTickets(numberOfTickets + 1)}
-                  className="rounded-md border border-gray-300 px-4 py-2 hover:bg-gray-50"
+                  className="rounded-md border border-gray-300 px-5 py-3 hover:bg-gray-50 text-lg font-semibold min-h-[44px] min-w-[44px]"
                 >
                   +
                 </button>

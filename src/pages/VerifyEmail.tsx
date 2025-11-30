@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/authService';
 import Button from '../components/Button';
 import ErrorMessage from '../components/ErrorMessage';
-import { createFriendlyError, logError } from '../utils/errorHandler';
+import { createFriendlyErrorWithContext, logError } from '../utils/errorHandler';
 
 const VerifyEmail = () => {
   const authService = new AuthService();
@@ -61,7 +61,10 @@ const VerifyEmail = () => {
       }
     } catch (err) {
       logError(err);
-      setError(createFriendlyError(err).message);
+      setError(createFriendlyErrorWithContext(err, {
+        operation: 'verify email',
+        userRole: 'Passenger'
+      }).message);
     } finally {
       setLoading(false);
     }

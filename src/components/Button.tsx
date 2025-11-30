@@ -10,7 +10,7 @@ const Button = ({ children, loading, disabled, ...rest }: Props) => {
     <button
       {...rest}
       disabled={disabled || loading}
-      className={`inline-flex w-full items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-400 ${
+      className={`inline-flex w-full items-center justify-center rounded-md bg-primary-600 px-4 py-2.5 sm:py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-400 min-h-[44px] ${
         rest.className || ''
       }`}
     >

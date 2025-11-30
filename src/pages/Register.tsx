@@ -5,7 +5,7 @@ import FormInput from '../components/FormInput';
 import Button from '../components/Button';
 import ErrorMessage from '../components/ErrorMessage';
 import { Validators, getPasswordStrength } from '../utils/validator';
-import { createFriendlyError, logError } from '../utils/errorHandler';
+import { createFriendlyErrorWithContext, logError } from '../utils/errorHandler';
 
 const Register = () => {
   const authService = new AuthService();
@@ -74,7 +74,10 @@ const Register = () => {
       }, 1000);
     } catch (err) {
       logError(err);
-      setApiError(createFriendlyError(err).message);
+      setApiError(createFriendlyErrorWithContext(err, {
+        operation: 'register',
+        userRole: 'Passenger'
+      }).message);
     } finally {
       setLoading(false);
     }

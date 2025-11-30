@@ -5,7 +5,7 @@ import FormInput from '../components/FormInput';
 import Button from '../components/Button';
 import ErrorMessage from '../components/ErrorMessage';
 import { Validators } from '../utils/validator';
-import { createFriendlyError, logError } from '../utils/errorHandler';
+import { createFriendlyErrorWithContext, logError } from '../utils/errorHandler';
 
 const ForgotPassword = () => {
   const authService = new AuthService();
@@ -28,7 +28,10 @@ const ForgotPassword = () => {
       setSuccessMsg(message || 'Reset password link has been sent to your email.');
     } catch (err) {
       logError(err);
-      setError(createFriendlyError(err).message);
+      setError(createFriendlyErrorWithContext(err, {
+        operation: 'forgot password',
+        userRole: 'Passenger'
+      }).message);
     } finally {
       setLoading(false);
     }

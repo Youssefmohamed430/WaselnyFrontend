@@ -5,7 +5,7 @@ import FormInput from '../components/FormInput';
 import Button from '../components/Button';
 import ErrorMessage from '../components/ErrorMessage';
 import { Validators, getPasswordStrength } from '../utils/validator';
-import { createFriendlyError, logError } from '../utils/errorHandler';
+import { createFriendlyErrorWithContext, logError } from '../utils/errorHandler';
 
 const useQuery = () => {
   const { search } = useLocation();
@@ -57,7 +57,10 @@ const ResetPassword = () => {
       }, 1500);
     } catch (err) {
       logError(err);
-      setApiError(createFriendlyError(err).message);
+      setApiError(createFriendlyErrorWithContext(err, {
+        operation: 'reset password',
+        userRole: 'Passenger'
+      }).message);
     } finally {
       setLoading(false);
     }
