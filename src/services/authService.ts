@@ -105,8 +105,16 @@ class AuthService {
   }
 
   isAuthenticated(): boolean {
+    // Check if we have a valid refresh token (stored in HTTP-only cookie)
+    // If refresh token is valid, we can get a new access token
+    const hasValidRefreshToken = tokenManager.isRefreshTokenValid();
+    
+    // Also check if we have a token (might be expired, but refresh can fix it)
     const token = tokenManager.getToken();
-    return !!token;
+    
+    // User is authenticated if they have a valid refresh token OR a token
+    // (token might be expired, but refresh token can renew it)
+    return hasValidRefreshToken || !!token;
   }
 
   getUserInfo(): AuthUser | null {

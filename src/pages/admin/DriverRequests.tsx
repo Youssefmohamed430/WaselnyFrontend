@@ -86,6 +86,15 @@ const DriverRequests = () => {
   });
 
   const getStatusBadge = (status: string) => {
+    // Map backend status to display text
+    const statusDisplayMap: Record<string, string> = {
+      Suspend: 'Pending',
+      Accepted: 'Accepted',
+      Rejected: 'Rejected'
+    };
+    
+    const displayStatus = statusDisplayMap[status] || status;
+    
     const colors = {
       Suspend: 'bg-yellow-100 text-yellow-800',
       Accepted: 'bg-green-100 text-green-800',
@@ -93,7 +102,7 @@ const DriverRequests = () => {
     };
     return (
       <span className={`px-2 py-1 rounded-full text-xs font-medium ${colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800'}`}>
-        {status}
+        {displayStatus}
       </span>
     );
   };
@@ -156,7 +165,7 @@ const DriverRequests = () => {
           emptyMessage="No driver requests found"
           actions={(item: DriverRequest) => (
             <div className="flex gap-1 sm:gap-2">
-              {item.status === 'Suspend' && (
+              {item.status === 'Suspend' ? (
                 <>
                   <button
                     onClick={(e) => {
@@ -164,7 +173,8 @@ const DriverRequests = () => {
                       setSelectedRequest(item);
                       setActionModal('accept');
                     }}
-                    className="px-2 sm:px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-xs sm:text-sm"
+                    disabled={processing}
+                    className="px-2 sm:px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
                   >
                     Accept
                   </button>
@@ -174,11 +184,14 @@ const DriverRequests = () => {
                       setSelectedRequest(item);
                       setActionModal('reject');
                     }}
-                    className="px-2 sm:px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs sm:text-sm"
+                    disabled={processing}
+                    className="px-2 sm:px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm whitespace-nowrap"
                   >
                     Reject
                   </button>
                 </>
+              ) : (
+                <span className="text-xs text-gray-500 italic">No actions available</span>
               )}
             </div>
           )}

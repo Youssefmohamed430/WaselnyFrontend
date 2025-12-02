@@ -148,16 +148,19 @@ const Stations = () => {
     { key: 'area', header: 'Area', sortable: true },
     { key: 'location', header: 'Location', sortable: true },
     {
-      key: 'latitude',
-      header: 'Latitude',
-      sortable: true,
-      render: (item: Station) => item.latitude.toFixed(6)
-    },
-    {
-      key: 'longitude',
-      header: 'Longitude',
-      sortable: true,
-      render: (item: Station) => item.longitude.toFixed(6)
+      key: 'map',
+      header: 'Location Link',
+      render: (item: Station) => (
+        <a
+          href={`https://www.google.com/maps?q=${item.latitude},${item.longitude}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:text-blue-800 underline"
+          onClick={(e) => e.stopPropagation()}
+        >
+          View on Map
+        </a>
+      )
     }
   ];
 

@@ -56,6 +56,32 @@ export const tokenManager = {
     const expirationDate = new Date(expiration);
     return expirationDate > new Date();
   },
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+    
+    try {
+      // JWT tokens have 3 parts separated by dots: header.payload.signature
+      const parts = token.split('.');
+      if (parts.length !== 3) return true;
+      
+      // Decode the payload (second part)
+      const payload = JSON.parse(atob(parts[1]));
+      
+      // Check if token has expiration claim
+      if (!payload.exp) return false; // No expiration means token doesn't expire (unlikely but handle it)
+      
+      // exp is in seconds, convert to milliseconds
+      const expirationTime = payload.exp * 1000;
+      const currentTime = Date.now();
+      
+      // Add 1 minute buffer to refresh before actual expiration
+      return currentTime >= (expirationTime - 60000);
+    } catch {
+      // If we can't decode the token, consider it expired
+      return true;
+    }
+  },
   clearAll() {
     this.removeToken();
     this.removeUserInfo();
